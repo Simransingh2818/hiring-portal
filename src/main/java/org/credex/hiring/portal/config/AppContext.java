@@ -37,7 +37,6 @@ public class AppContext {
 
 
     @Bean
-    @Lazy
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(environment.getRequiredProperty("jdbc.driverClassName"));
@@ -57,7 +56,6 @@ public class AppContext {
     }
 
     @Bean
-    @Lazy
     public HibernateTransactionManager getTransactionManager() {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
         transactionManager.setSessionFactory(sessionFactory().getObject());

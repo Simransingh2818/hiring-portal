@@ -1,7 +1,7 @@
 package org.credex.hiring.portal.dao;
 
-import org.credex.hiring.portal.model.Role;
 import org.credex.hiring.portal.model.Users;
+import org.credex.hiring.portal.service.BeanUtility;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -16,6 +16,8 @@ public class UserDaoImpl implements UserDao {
 
     @Autowired
     private SessionFactory sessionFactory;
+
+
 
     @Override
     @Transactional
@@ -33,9 +35,15 @@ public class UserDaoImpl implements UserDao {
     @Override
     @Transactional
     public Users updateUser(Users user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.save(user);
-        return user;
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            Users oldUserRec = session.get(Users.class, user.getUserId());
+            BeanUtility.copyNonNullProperties(user,oldUserRec );
+            session.save(oldUserRec);
+            return oldUserRec;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

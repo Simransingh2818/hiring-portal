@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users updateUser(Users user) {
-       return userDao.updateUser(user);
+        return userDao.updateUser(user);
     }
 
     @Override
@@ -39,4 +39,3 @@ public class UserServiceImpl implements UserService {
         return userDao.createUser(user);
     }
 }
-

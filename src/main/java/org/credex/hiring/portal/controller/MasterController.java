@@ -16,10 +16,23 @@ public class MasterController {
     private RoleDao roleDao;
     @PostMapping(value = "/add")
     public Role createRole(@RequestBody Role role) {
+
         return roleDao.createRole(role);
     }
     @GetMapping("/get")
     public List<Role> getAllRole() {
+
         return roleDao.getAllRole();
     }
+    @PutMapping("/update")
+    public Role updateUser( @RequestBody Role role) {
+
+        return roleDao.updateRole(role);
+    }
+    @GetMapping("/getById/{roleId}")
+    public Role getRoleById(@PathVariable int roleId) {
+        return roleDao.getRoleById(roleId);
+    }
+
+
 }
