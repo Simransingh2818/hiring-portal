@@ -1,7 +1,5 @@
 package org.credex.hiring.portal.model;
 
-import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 
 
@@ -15,7 +13,7 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int userid;
+    private int userId;
 
     @Column(name = "sel_status")
     private boolean status;
@@ -51,7 +49,7 @@ public class Users {
     }
 
     public Users(int userid, boolean status, String emailId, String password, String firstName, String lastName, int roleId, String experience, String language, String skills, String resumeLink) {
-        this.userid = userid;
+        this.userId = userid;
         this.status = status;
         this.emailId = emailId;
         this.password = password;
@@ -64,12 +62,12 @@ public class Users {
         this.resumeLink = resumeLink;
     }
 
-    public int getUserid() {
-        return userid;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUserid(int userid) {
-        this.userid = userid;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public boolean isStatus() {
