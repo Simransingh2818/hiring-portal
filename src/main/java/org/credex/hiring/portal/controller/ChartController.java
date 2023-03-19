@@ -12,7 +12,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/chart")
 public class ChartController {
-
     @Autowired
     private CampusDao campusDao;
 

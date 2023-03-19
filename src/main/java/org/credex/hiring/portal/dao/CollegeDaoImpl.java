@@ -70,4 +70,5 @@ public class CollegeDaoImpl implements CollegeDao {
         List<Colleges> colleges = query.getResultList();
         return colleges;
     }
+
 }

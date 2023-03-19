@@ -14,6 +14,7 @@ public class MasterController {
 
     @Autowired
     private RoleDao roleDao;
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "/add")
     public Role createRole(@RequestBody Role role) {
 
