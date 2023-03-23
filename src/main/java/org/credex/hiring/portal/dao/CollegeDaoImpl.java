@@ -13,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import java.lang.reflect.InvocationTargetException;
+
 import java.util.List;
 
 @Repository
@@ -52,7 +50,7 @@ public class CollegeDaoImpl implements CollegeDao {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public String deleteCollege(int collegeId) {
         Session session = sessionFactory.getCurrentSession();
         Object ob = (Object) session.load(Colleges.class, collegeId);

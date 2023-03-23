@@ -15,6 +15,7 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan(basePackages = {
     "org.credex.hiring.portal"
 })
+
 public class WebMvcConfig implements WebMvcConfigurer {
 
     public InternalResourceViewResolver resolver() {
