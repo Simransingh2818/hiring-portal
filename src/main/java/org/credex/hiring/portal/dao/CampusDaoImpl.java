@@ -27,13 +27,13 @@ public class CampusDaoImpl implements CampusDao {
         // Count the number of registered students
         CriteriaQuery<Long> cqRegisteredStudents = cb.createQuery(Long.class);
         Root<Users> rootRegisteredStudents = cqRegisteredStudents.from(Users.class);
-        cqRegisteredStudents.select(cb.count(rootRegisteredStudents.get("userid")));
+        cqRegisteredStudents.select(cb.count(rootRegisteredStudents.get("userId")));
         Long registeredStudentsCount = session.createQuery(cqRegisteredStudents).getSingleResult();
 
         // Count the number of selected students
         CriteriaQuery<Long> cqSelectedStudents = cb.createQuery(Long.class);
         Root<Users> rootSelectedStudents = cqSelectedStudents.from(Users.class);
-        cqSelectedStudents.select(cb.count(rootSelectedStudents.get("userid")))
+        cqSelectedStudents.select(cb.count(rootSelectedStudents.get("userId")))
                 .where(cb.equal(rootSelectedStudents.get("status"), true));
         Long selectedStudentsCount = session.createQuery(cqSelectedStudents).getSingleResult();
 

@@ -32,6 +32,7 @@ public class MasterController {
     }
     @GetMapping("/getById/{roleId}")
     public Role getRoleById(@PathVariable int roleId) {
+
         return roleDao.getRoleById(roleId);
     }
 

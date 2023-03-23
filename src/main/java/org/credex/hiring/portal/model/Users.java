@@ -27,7 +27,7 @@ public class Users {
     private String lastName;
 
     @Column(name = "role_id")
-    private int  roleId;
+    private String  roleId;
     @Column(name = "exp")
     private String experience;
 
@@ -40,15 +40,15 @@ public class Users {
     @Column(name = "resume_link")
     private String resumeLink;
 
-    public int getRoleId() {
+    public String getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
 
-    public Users(int userid, boolean status, String emailId, String password, String firstName, String lastName, int roleId, String experience, String language, String skills, String resumeLink) {
+    public Users(int userid, boolean status, String emailId, String password, String firstName, String lastName, String roleId, String experience, String language, String skills, String resumeLink) {
         this.userId = userid;
         this.status = status;
         this.emailId = emailId;

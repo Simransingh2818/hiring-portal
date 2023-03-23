@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "role_table")
 public class Role {
-    public Role(String roleId, String roleName, Timestamp createdDate) {
+    public Role(int roleId, String roleName, Timestamp createdDate) {
         this.roleId = roleId;
         this.roleName = roleName;
         this.createdDate = createdDate;
@@ -29,13 +29,13 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role")
-    private String roleId;
+    private int roleId;
 
-    public String getRoleId() {
+    public int getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(int roleId) {
         this.roleId = roleId;
     }
 

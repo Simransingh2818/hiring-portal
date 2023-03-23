@@ -16,7 +16,7 @@ public class UserController {
    @Autowired
    private UserDao userDao;
     @CrossOrigin(origins = "http://localhost:4200")
-    @PostMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public Users createUser(@Validated @RequestBody Users user) {
         return userDao.createUser(user);
 
