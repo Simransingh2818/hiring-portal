@@ -1,5 +1,6 @@
-package org.credex.hiring.portal.dao;
+package org.credex.hiring.portal.DaoImpl;
 
+import org.credex.hiring.portal.dao.RoleDao;
 import org.credex.hiring.portal.model.Role;
 import org.credex.hiring.portal.model.Users;
 import org.credex.hiring.portal.service.BeanUtility;
@@ -13,25 +14,33 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public class RoleDaoImpl implements RoleDao{
+public class RoleDaoImpl implements RoleDao {
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
-    @Transactional
     public Role createRole(Role role) {
-        Session session = sessionFactory.getCurrentSession();
-        session.save(role);
-        return role;
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            session.save(role);
+            return role;
+        } catch (Exception e) {
+            throw new RuntimeException("Error creating role", e);
+        }
     }
+
     @Override
-    @Transactional
     public List<Role> getAllRole() {
-        Session session = sessionFactory.getCurrentSession();
-        Query<Role> query = session.createQuery("FROM Role", Role.class);
-        List<Role> roles = query.getResultList();
-        return roles;
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            Query<Role> query = session.createQuery("FROM Role", Role.class);
+            List<Role> roles = query.getResultList();
+            return roles;
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting all roles", e);
+        }
     }
+
     public Role updateRole(Role role) {
         try {
             Session session = sessionFactory.getCurrentSession();
@@ -40,14 +49,18 @@ public class RoleDaoImpl implements RoleDao{
             session.save(oldRoleRec);
             return oldRoleRec ;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error updating role", e);
         }
     }
+
     @Override
-    @Transactional
     public Role getRoleById(int roleId) {
-        Session session = sessionFactory.getCurrentSession();
-        Role role = session.get(Role.class, roleId);
-        return role;
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            Role role = session.get(Role.class, roleId);
+            return role;
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting role by id", e);
+        }
     }
 }

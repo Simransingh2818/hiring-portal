@@ -8,6 +8,7 @@ import org.codehaus.jackson.map.annotate.JsonView;
 import org.credex.hiring.portal.dao.UserDao;
 import org.credex.hiring.portal.model.Login;
 import org.credex.hiring.portal.model.Users;
+import org.credex.hiring.portal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,12 +22,13 @@ import java.util.Optional;
 public class AuthenticationController {
 
     @Autowired
-    private UserDao userDao;
+    private UserService userService;
 
     @PostMapping("/login")
+    @CrossOrigin(origins = "http://localhost:4200")
     public Login authenticateUser(@RequestBody Login login) {
 
-          return userDao.authenticateUser(login.getEmailId(), login.getPass());
+          return userService.authenticateUser(login.getEmailId(), login.getPass());
 
     }
 

@@ -1,4 +1,5 @@
-package org.credex.hiring.portal.dao;
+package org.credex.hiring.portal.DaoImpl;
+import org.credex.hiring.portal.dao.ScoreOfCandidateDao;
 import org.credex.hiring.portal.model.ScoreOfCandidate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
