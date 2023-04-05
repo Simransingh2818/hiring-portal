@@ -1,7 +1,8 @@
-package org.credex.hiring.portal.dao;
+package org.credex.hiring.portal.DaoImpl;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
+import org.credex.hiring.portal.dao.CollegeDao;
 import org.credex.hiring.portal.model.Colleges;
 import org.credex.hiring.portal.model.Users;
 import org.credex.hiring.portal.service.BeanUtility;
@@ -23,50 +24,54 @@ public class CollegeDaoImpl implements CollegeDao {
 
 
     @Override
-    @Transactional
     public Colleges createCollege(Colleges colleges) {
-        Session session = sessionFactory.getCurrentSession();
         try {
+            Session session = sessionFactory.getCurrentSession();
             session.save(colleges);
-        } finally {
             session.flush();
+            return colleges;
+        } catch (Exception e) {
+            throw new RuntimeException("Error creating college: " + e.getMessage(), e);
         }
-        return colleges;
-
     }
 
     @Override
-    @Transactional
     public Colleges updateCollege(Colleges colleges) {
         try {
             Session session = sessionFactory.getCurrentSession();
             Colleges oldCollegesRRec = session.get(Colleges.class, colleges.getCollegeId());
             BeanUtility.copyNonNullProperties(colleges, oldCollegesRRec);
             session.save(oldCollegesRRec);
+            session.flush();
             return oldCollegesRRec;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error updating college: " + e.getMessage(), e);
         }
     }
 
     @Override
-    @Transactional
     public String deleteCollege(int collegeId) {
-        Session session = sessionFactory.getCurrentSession();
-        Object ob = (Object) session.load(Colleges.class, collegeId);
-        session.delete(ob);
-        session.flush();
-        return "This is deleted";
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            Object ob = (Object) session.load(Colleges.class, collegeId);
+            session.delete(ob);
+            session.flush();
+            return "This is deleted";
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting college: " + e.getMessage(), e);
+        }
     }
 
-
     @Override
-    @Transactional
     public List<Colleges> getAllCollege() {
-        Session session = sessionFactory.getCurrentSession();
-        Query<Colleges> query = session.createQuery("FROM Colleges", Colleges.class);
-        List<Colleges> colleges = query.getResultList();
-        return colleges;
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            Query<Colleges> query = session.createQuery("FROM Colleges", Colleges.class);
+            List<Colleges> colleges = query.getResultList();
+            return colleges;
+        } catch (Exception e) {
+            throw new RuntimeException("Error retrieving all colleges: " + e.getMessage(), e);
+        }
     }
 
 }

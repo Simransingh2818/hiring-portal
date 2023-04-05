@@ -3,6 +3,7 @@ package org.credex.hiring.portal.controller;
 import org.credex.hiring.portal.dao.CollegeDao;
 import org.credex.hiring.portal.dao.UserDao;
 import org.credex.hiring.portal.model.Colleges;
+import org.credex.hiring.portal.service.CollegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -14,23 +15,26 @@ import java.util.List;
 @RequestMapping("/colleges")
 public class CollegeController {
     @Autowired
-    private CollegeDao collegeDao;
+    private CollegeService collegeService;
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public Colleges createUser(@Validated @RequestBody Colleges colleges) {
-        return collegeDao.createCollege(colleges);
+        return collegeService.createCollege(colleges);
 
     }
     @GetMapping("/all")
+    @CrossOrigin(origins = "http://localhost:4200")
     public List<Colleges> getAllCollege() {
-        return collegeDao.getAllCollege();
+        return collegeService.getAllCollege();
     }
     @PutMapping("/update")
+    @CrossOrigin(origins = "http://localhost:4200")
     public Colleges updateCollege(@RequestBody Colleges colleges) {
-        return collegeDao.updateCollege(colleges);
+        return collegeService.updateCollege(colleges);
     }
     @DeleteMapping("/delete/{collegeId}")
+    @CrossOrigin(origins = "http://localhost:4200")
     public String deleteCollege(@PathVariable("collegeId") int collegeId) {
-        return collegeDao.deleteCollege(collegeId);
+        return collegeService.deleteCollege(collegeId);
     }
 }

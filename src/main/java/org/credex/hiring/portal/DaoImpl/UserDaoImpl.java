@@ -1,7 +1,8 @@
-package org.credex.hiring.portal.dao;
+package org.credex.hiring.portal.DaoImpl;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.credex.hiring.portal.dao.UserDao;
 import org.credex.hiring.portal.model.Login;
 import org.credex.hiring.portal.model.Users;
 import org.credex.hiring.portal.service.BeanUtility;
@@ -9,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,41 +24,40 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-
-
     @Override
-    @Transactional
     public Users createUser(Users user) {
         Session session = sessionFactory.getCurrentSession();
         try {
             session.save(user);
-        }finally {
             session.flush();
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error creating user", e);
         }
         return user;
     }
 
     @Override
-    @Transactional
     public Users updateUser(Users user) {
         try {
             Session session = sessionFactory.getCurrentSession();
             Users oldUserRec = session.get(Users.class, user.getUserId());
             BeanUtility.copyNonNullProperties(user,oldUserRec );
             session.save(oldUserRec);
+            session.flush();
             return oldUserRec;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error updating user", e);
         }
     }
 
-
     @Override
-    @Transactional
-    public String  deleteUser(int userId) {
-
-        Boolean aBoolean = deleteById(Users.class, userId);
-        return "This {userId} has been deleted";
+    public String deleteUser(int userId) {
+        try {
+            Boolean aBoolean = deleteById(Users.class, userId);
+            return "This {userId} has been deleted";
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error deleting user", e);
+        }
     }
 
     public <T> boolean deleteById (Class<T> clazz, int id) {
@@ -68,32 +69,42 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    @Transactional
     public Users getUserById(int userId) {
-        Session session = sessionFactory.getCurrentSession();
-        Users user = session.get(Users.class, userId);
-        return user;
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            Users user = session.get(Users.class, userId);
+            return user;
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error getting user by id", e);
+        }
     }
 
     @Override
-    @Transactional
     public Users getUserByEmailId(String emailId) {
-        Session session = sessionFactory.getCurrentSession();
-        Users user = session.get(Users.class, emailId);
-        return user;
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            Query<Users> query = session.createQuery("FROM Users u WHERE u.emailId = :emailId", Users.class)
+                    .setParameter("emailId", emailId);
+            Users user = query.uniqueResult();
+            return user;
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error getting user by email", e);
+        }
     }
+
     @Override
-    @Transactional
     public List<Users> getAllUsers() {
-        Session session = sessionFactory.getCurrentSession();
-        Query<Users> query = session.createQuery("FROM Users", Users.class);
-        List<Users> users = query.getResultList();
-        return users;
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            Query<Users> query = session.createQuery("FROM Users", Users.class);
+            List<Users> users = query.getResultList();
+            return users;
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error getting all users", e);
+        }
     }
 
-
     @Override
-    @Transactional
     public Login authenticateUser(String emailId, String password) {
         try (Session session = sessionFactory.openSession()) {
             Query<Users> query = session.createQuery(
@@ -114,8 +125,11 @@ public class UserDaoImpl implements UserDao {
                         .compact();
                 return new Login(token,user.getRoleId(),user.getEmailId(), user.getUserId());
             } else {
-                throw new RuntimeException("error");
+                throw new RuntimeException("User not found");
             }
+        } catch (Exception e) {
+            throw new RuntimeException("Error authenticating user: " + e.getMessage(), e);
         }
     }
+
 }
